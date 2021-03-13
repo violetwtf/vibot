@@ -6,7 +6,7 @@ import asyncpg
 class GuildSettings:
     prefix: str
     random_color_enabled: bool
-    commands_enabled: bool
+    commands_enabled: bool  # unused
 
     def __init__(self, prefix: str, random_color_enabled: bool = False):
         self.prefix = prefix

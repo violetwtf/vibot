@@ -1,6 +1,8 @@
 import discord
 from commands.commands import commands, Command
 from util.undoers import get_simple_delete_undoer
+from guild.settings import get_settings
+from context import client
 
 _undo, _log = get_simple_delete_undoer('help')
 
@@ -8,6 +10,11 @@ _undo, _log = get_simple_delete_undoer('help')
 async def _handle(_, channel: discord.TextChannel, author: discord.User, m):
     helps = []
     seen = []
+
+    prefix = get_settings(channel.guild.id).prefix
+
+    if prefix == '':
+        prefix = client.user.mention + ' '
 
     for command in commands.values():
         if command in seen:
@@ -19,7 +26,9 @@ async def _handle(_, channel: discord.TextChannel, author: discord.User, m):
             if await command.can_run_executor(author, channel.guild, channel):
                 continue
 
-        helps.append(f'**{command.aliases[0]}** - {command.description}')
+        helps.append(f'**{prefix}{command.aliases[0]}** - {command.description}')
+
+    helps.append(f'\nThis server\'s prefix: `{prefix}`')
 
     _log(await channel.send('\n'.join(helps)), m)
 

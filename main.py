@@ -73,15 +73,18 @@ async def on_ready():
     await load_guild_settings()
     print('Ready!')
 
+    await client.change_presence(status=discord.Status.online,
+                                 activity=discord.Game('@vibot help'))
+
     for guild in client.guilds:
         guild: discord.Guild = guild
-        if guild.id not in whitelist:
+        if config.whitelist and guild.id not in whitelist:
             await guild.leave()
 
 
 @client.event
 async def on_guild_join(guild: discord.Guild):
-    if guild.id not in whitelist:
+    if get_config().whitelist and guild.id not in whitelist:
         await guild.leave()
 
 

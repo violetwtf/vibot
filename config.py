@@ -4,6 +4,7 @@ from typing import Dict
 class Config:
     token: str
     debug: bool
+    whitelist: bool
 
     db_username: str
     db_password: str
@@ -14,6 +15,7 @@ class Config:
     def __init__(self, config_dict: Dict[str, any]):
         self.token = str(config_dict['token'])
         self.debug = bool(config_dict['debug'])
+        self.whitelist = bool(config_dict['whitelist'])
 
         self.db_username = str(config_dict['db_username'])
         self.db_password = str(config_dict['db_password'])
